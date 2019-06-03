@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 if (user != null && !newPassword.getText().toString().trim().equals("")) {
                     if (newPassword.getText().toString().trim().length() < 6) {
-                        newPassword.setError("Contraseña demasiado corta, ingrese un mínimo de 6 caracteres");
+                        newPassword.setError("Contraseña demasiado corta, ingresar un mínimo de 6 caracteres");
                         progressBar.setVisibility(View.GONE);
 
 
