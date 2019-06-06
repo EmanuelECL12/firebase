@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,18 +29,22 @@ public class MainActivity extends AppCompatActivity {
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
             changeEmail, changePassword, sendEmail, remove, signOut;
 
+
     private EditText oldEmail, newEmail, password, newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.app_name));
-       setSupportActionBar(toolbar);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+        setSupportActionBar(toolbar);
+
+        //get firebase auth instance
         auth = FirebaseAuth.getInstance();
 
         //get current user
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnRemoveUser = (Button) findViewById(R.id.remove_user_button);
         changeEmail = (Button) findViewById(R.id.changeEmail);
         changePassword = (Button) findViewById(R.id.changePass);
-        sendEmail = (Button) findViewById(R.id.send);
+        sendEmail = (Button) findViewById(R.id.sending_pass_reset_button);
         remove = (Button) findViewById(R.id.remove);
         signOut = (Button) findViewById(R.id.sign_out);
 
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 remove.setVisibility(View.GONE);
             }
         });
+
         changeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(MainActivity.this, "La dirección de correo electrónico está actualizada. Por favor, inicia sesión con un nuevo correo electrónico de identificación!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MainActivity.this, "La dirección de correo electrónico esta actualizada. Por favor inicie sesión con una nueva id de correo electrónico!", Toast.LENGTH_LONG).show();
                                         signOut();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
-                                        Toast.makeText(MainActivity.this, "Error al actualizar el correo electrónico!\n", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MainActivity.this, "Error al actualizar el correo electrónico!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
@@ -126,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,28 +153,26 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 if (user != null && !newPassword.getText().toString().trim().equals("")) {
                     if (newPassword.getText().toString().trim().length() < 6) {
-                        newPassword.setError("Contraseña demasiado corta, ingresar un mínimo de 6 caracteres");
+                        newPassword.setError("Contraseña demasiado corta, ingrese un minimo de 6 caracteres");
                         progressBar.setVisibility(View.GONE);
-
-
                     } else {
                         user.updatePassword(newPassword.getText().toString().trim())
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(MainActivity.this, "La contraseña se actualiza, inicie sesión con una nueva contraseña!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "La contraseña se actualiza,inicie sesión con una nueva contraseña!", Toast.LENGTH_SHORT).show();
                                             signOut();
                                             progressBar.setVisibility(View.GONE);
                                         } else {
-                                            Toast.makeText(MainActivity.this, "Error al actualizar la contraseña\n!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "Error al actualizar la contraseña!", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                         }
                                     }
                                 });
                     }
                 } else if (newPassword.getText().toString().trim().equals("")) {
-                    newPassword.setError("Enter password");
+                    newPassword.setError("Introducir la contraseña");
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -197,10 +202,10 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(MainActivity.this, "Se ha enviado un correo electrónico para restablecer la contraseña ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Restablecer contraseña se envía un correo electrónico!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
-                                        Toast.makeText(MainActivity.this, "Error al enviar correo electrónico de restablecimiento!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Error al enviar correo electrónico!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
@@ -222,12 +227,12 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(MainActivity.this, "Tu perfil ha sido eliminado :( ¡Crea una cuenta ahora!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Su perfil ha sido eliminado :( Crear una cuenta ahora!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(MainActivity.this, SignupActivity.class));
                                         finish();
                                         progressBar.setVisibility(View.GONE);
                                     } else {
-                                        Toast.makeText(MainActivity.this, "Error al eliminar tu cuenta!\n", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Error al eliminar tu cuenta!", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }

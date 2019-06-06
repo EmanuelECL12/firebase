@@ -15,6 +15,7 @@
     <string name = "hint_password"> Password </string>
     <string name = "hint_name"> Nombre completo </string>
     <string name = "btn_login"> LOGIN </string>
+    <string name="prompt_password">prompt_password</string>
     <string name = "btn_link_to_register"> ¿No es miembro? ¡Regístrese en Firebase ahora! </string>
     <string name = "btn_link_to_login"> Ya registrado. ¡Iniciar sesión! </string>
     <string name = "title_activity_reset_password"> ResetPasswordActivity </string>
@@ -27,6 +28,7 @@
     <string name = "btn_remove"> Remove </string>
     <string name = "btn_sign_out"> Cerrar sesión </string>
     <string name = "lbl_forgot_password"> ¿Olvidó la contraseña? </string>
+
     <string name = "forgot_password_msg"> Solo necesitamos su ID de correo electrónico registrada para enviarle las instrucciones para restablecer su contraseña. </string>
 
 
